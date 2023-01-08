@@ -3,6 +3,8 @@ import * as cheerio from "cheerio";
 
 export class Crawler {
   constructor(url) {
+    console.log("Crawling: " + url);
+
     const crawl = async () => {
       const response = await fetch(url);
       const body = await response.text();
@@ -12,8 +14,15 @@ export class Crawler {
 
       const arr = [];
       $(links).each(function (i, link) {
-        arr.push($(link).attr("href"));
+        link = $(link).attr("href");
+
+        if (link.slice(url.length)[0] == url) {
+          link = url + link;
+        }
+
+        arr.push(link);
       });
+
       return arr;
     };
 
